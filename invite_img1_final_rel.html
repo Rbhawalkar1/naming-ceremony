@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Naming Ceremony — Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#e07a00;--muted:#5b5b66}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:"Baloo 2",system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#fffaf6,#fff7ee);display:flex;align-items:center;justify-content:center;padding:12px;color:#222}
+.container{width:100%;max-width:720px;border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(20,20,40,0.12);}
+.card{position:relative;background-image:url('img1.png');background-size:cover;background-position:center;padding:36px;border-radius:12px;display:flex;flex-direction:column;justify-content:flex-start;}
+.overlay{background:rgba(255,255,255,0.29);padding:28px;border-radius:10px;backdrop-filter:none;margin:24px;}
+.title{text-align:center;margin-top: 68px;}
+.title h1{margin:0;font-size:34px;color:var(--accent);font-weight:700}
+.subtitle{color:#6b4b1a;margin-top:6px;font-size:15px}
+.baby-photo{width:320px;height:220px;border-radius:14px;margin:16px auto;overflow:hidden;background-image:url('final_pic.jpg');background-size:cover;background-position:center;border:6px solid rgba(255,255,255,0.9);box-shadow:0 12px 36px rgba(0,0,0,0.12)}
+.details{text-align:center;margin-top:8px;color:#5b3b10}
+.details .when{font-weight:700;margin-top:8px;font-size:16px}
+.details .venue{margin-top:6px;font-size:15px}
+.address{font-size:14px;color:var(--muted);margin-top:6px}
+.hosts{text-align:center;margin-top:12px;color:#5b3b10;font-weight:600}
+.map-btn{display:inline-block;margin:12px auto 0;background:linear-gradient(90deg,#ffb84d,#e07a00);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+.footer{margin-top:12px;text-align:center;color:#666;font-size:13px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
+.hint{position:fixed;left:12px;right:12px;bottom:18px;margin:auto;max-width:720px;background:#fff;padding:10px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.08);text-align:center;display:none;z-index:40}
+@media (max-width:520px){ .baby-photo{width:92%;height:220px} .title h1{font-size:26px} .overlay{padding:18px} .card{padding:18px} }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div id="card" class="card" role="region" aria-label="Invitation card">
+      <div class="overlay">
+        <div class="title">
+          <h1>Naming Ceremony</h1>
+          <div class="subtitle">Mr & Mrs Bhawalkar cordially invite you to celebrate</div>
+        </div>
+
+        <div class="baby-photo" id="babyPhoto" aria-label="Baby photo"></div>
+
+        <div class="details">
+          <div class="when">16 November 2025 &nbsp; | &nbsp; 11:30 AM</div>
+          <div class="venue">Shri Ganga Hotel, Dewas Road</div>
+          <div class="address">50 Ramkrishna colony, Dushera Maidan, Dewas Rd, Ujjain, Madhya Pradesh 456010</div>
+          <div style="text-align:center"><a class="map-btn" href="https://www.google.com/maps?q=50+Ramkrishna+colony,+dushera+maidan,+Dewas+Rd,+Ujjain,+Madhya+Pradesh+456010" target="_blank" rel="noopener">📍 Open in Google Maps</a></div>
+        </div>
+
+        <div class="hosts">Hosted with love by <br><strong>Vilas Bhawalkar · Veena Bhawalkar · Ravi Bhawalkar · Akanaksha Bhawalkar</strong></div>
+        <div class="footer">We would be delighted by your presence. RSVP to Ravi Bhawalkar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint" class="hint">Audio was blocked — tap the card to start music & confetti.</div>
+  <canvas id="confetti"></canvas>
+
+  <!-- fallback lullaby MP3 (public permissive sample) -->
+  <audio id="bgm" src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" preload="auto" loop></audio>
+
+<script>
+// confetti logic (lightweight)
+const canvas = document.getElementById('confetti'), ctx = canvas.getContext('2d');
+let W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
+window.addEventListener('resize', ()=>{ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+function rand(a,b){ return Math.random()*(b-a)+a; }
+let conf = [];
+function makeConfetti(){ const colors=['#ff6fa3','#ffd166','#6ad3ff','#9fffb2','#b694ff']; for(let i=0;i<200;i++){ conf.push({x:rand(0,W), y:rand(-H,0), w:rand(6,14), h:rand(8,18), vx:rand(-2.5,2.5), vy:rand(2,7), rot:rand(0,360), vr:rand(-8,8), color: colors[Math.floor(rand(0,colors.length))]}); } }
+function runConfetti(){ ctx.clearRect(0,0,W,H); if(!conf.length) return; for(const c of conf){ c.x+=c.vx; c.y+=c.vy; c.rot+=c.vr; ctx.save(); ctx.translate(c.x,c.y); ctx.rotate(c.rot*Math.PI/180); ctx.fillStyle = c.color; ctx.fillRect(-c.w/2,-c.h/2,c.w,c.h); ctx.restore(); } conf = conf.filter(c => c.y < H + 30); if(conf.length) requestAnimationFrame(runConfetti); }
+function startConfetti(){ conf=[]; makeConfetti(); requestAnimationFrame(runConfetti); setTimeout(()=>{ conf=[]; }, 7000); }
+
+// audio autoplay attempt (uses <audio> element to avoid CORS fetch issues)
+const bgm = document.getElementById('bgm');
+const hint = document.getElementById('hint');
+let started = false;
+async function tryAutoplay(){
+  try{
+    bgm.volume = 0;
+    const p = bgm.play();
+    if(p !== undefined) await p;
+    // fade-in
+    let v=0; const id=setInterval(()=>{ v = Math.min(0.7, v + 0.07); bgm.volume = v; if(v>=0.7) clearInterval(id); }, 200);
+    startConfetti();
+    hint.style.display = 'none';
+    started = true;
+  }catch(e){
+    console.warn('Autoplay blocked:', e);
+    hint.style.display = 'block';
+  }
+}
+
+// user gesture fallback
+async function userStart(){
+  if(started) return;
+  try{
+    const p = bgm.play();
+    if(p !== undefined) await p;
+    let v=0; const id=setInterval(()=>{ v = Math.min(0.7, v + 0.07); bgm.volume = v; if(v>=0.7) clearInterval(id); }, 200);
+    startConfetti();
+    hint.style.display = 'none';
+    started = true;
+  }catch(e){ console.error('User start failed', e); }
+}
+
+document.getElementById('card').addEventListener('click', (ev)=>{
+  if(ev.target.tagName.toLowerCase() === 'a' || ev.target.closest('a')) return;
+  if(!started) userStart();
+});
+
+window.addEventListener('load', ()=>{ setTimeout(tryAutoplay, 300); });
+</script>
+</body>
+</html>
